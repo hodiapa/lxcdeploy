@@ -1,0 +1,63 @@
+#!/usr/bin/expect -f
+
+set timeout 3000
+
+spawn ssh ubuntu@[lindex $argv 0]
+#spawn ssh ubuntu@[lindex $argv 1]
+
+expect "*?/no?" {
+    send "yes\r"
+    expect "*?assword:" { send "ubuntu\r" }
+    } "*?assword:" { send "ubuntu\r" }
+
+#login as root
+expect "*:~?*" { send "sudo -s\r" }
+expect "*untu:" { send "ubuntu\r" }
+
+
+expect "*?#" { send "java -version\r" }
+expect "OpenJDK" { send "echo java is installed\r" } "bash: java: command not found" { send "Java is not installed on this container\r" } "*?#" { send "\r" }
+
+#set javahome $::env(HADOOP_HOME)
+
+#if [ -n "$javahome" ]
+# Test whether command-line argument is present (non-empty).
+#then
+#lxc_name=$1
+#else
+#lxc_name=$LXC_NAME # Default, if not specified on command-line.
+#fi
+
+#puts "echo $javahome\r" 
+
+#if { $javahome eq ""} { puts "JAVA_HOME is not set" }
+#else {puts "Found JAVA_HOME"}
+
+#expect "*?#" { send "apt-get install git\r" }
+#expect "*Y*" { send "Y\r" } "*?#" { send "\r" }
+#send "apt-get install wget\r"
+#puts "\nInstalling spark.This might take a while. When done exit from the ssh session manually"
+#expect ":~#" { send "wget d3kbcqa49mib13.cloudfront.net/spark-0.9.0-incubating.tgz\r" }
+#expect " *wget: command not*" { send "apt-get install wget\r"} 
+
+#expect "*unable to resolve host*" { 
+#       send "wget d3kbcqa49mib13.cloudfront.net/spark-0.9.0-incubating.tgz\r"
+#       expect "*unable to resolve host*" { puts "connectivity issue. Logging out"
+ #                                          send "exit\r"
+ #                                          send "exit\r" } "*?#" { send "\r" }
+ #      }  "*?#" { send "\r" }
+
+#expect  "*?#" { send "tar xzf spark-0.9.0-incubating.tgz\r" } 
+#expect "*?#" { send "cd spark-0.9.0-incubating\r" }
+#expect "*?:~/spark-0.9.0-incubating#" { send "sbt/sbt assembly\r" }
+#expect "*?:~/spark-0.9.0-incubating#" { send "exit\r"
+#                                        send "exit\r"
+ #                                     }
+#interact "*" send "\r" 
+#expect "*" { send "^[\[D" }
+#expect "*" { send "\r"}
+#expect "*?#" { send "exit" }
+#expect "*:~*" { send "exit" }
+
+interact
+
