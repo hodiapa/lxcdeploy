@@ -1,10 +1,16 @@
 #!/usr/bin/expect -f
 
-set timeout 3000
+#Set tcl variables
+set container ubuntu@[lindex $argv 0]
+set timeout 500
+set hdp_tarball "hadoop-1.0.4.tar.gz"
+set hdp_folder  "hadoop-1.0.4"
+set spark_home  "/home/ubuntu/spark-0.9.0-incubating"
 
-
+#spawn ssh session
 spawn ssh ubuntu@[lindex $argv 0]
 #spawn ssh ubuntu@[lindex $argv 1]
+
 
 expect "*?/no?" {
     send "yes\r"
@@ -14,32 +20,76 @@ expect "*?/no?" {
 #login as root
 expect "*:~?*" { send "sudo -s\r" }
 expect "*untu:" { send "ubuntu\r" }
-#install package
-#puts"\nInstalling git"
-expect "*?#" { send "apt-get install git\r" }
-expect "*Y*" { send "Y\r" } "*?#" { send "\r" }
-send "apt-get install wget\r"
-#puts "\nInstalling spark.This might take a while. When done exit from the ssh session manually"
-expect ":~#" { send "wget d3kbcqa49mib13.cloudfront.net/spark-0.9.0-incubating.tgz\r" }
-#expect " *wget: command not*" { send "apt-get install wget\r"} 
 
-expect "*unable to resolve host*" { 
-       send "wget d3kbcqa49mib13.cloudfront.net/spark-0.9.0-incubating.tgz\r"
-       expect "*unable to resolve host*" { puts "connectivity issue. Logging out"
+puts "\n-----------------------------"
+puts "Logged into $container"
+puts "-------------------------------\n"
+
+#check if wget is installed , else install
+expect "*?#" { send "which wget >/dev/null || apt-get install wget\r" }
+#Download hadoop tarball
+
+expect "*?#" { send "file $hdp_tarball\r" 
+
+expect "ERROR" { 
+                send "wget archive.apache.org/dist/hadoop/core/hadoop-1.0.4/hadoop-1.0.4.tar.gz\r"
+                #Try downloading twice and exit the contaiiner
+                expect "*unable to resolve host*" {
+                   send "wget archive.apache.org/dist/hadoop/core/hadoop-1.0.4/hadoop-1.0.4.tar.gz\r"
+                   expect "*unable to resolve host*" { puts "connectivity issue. Logging out"
                                            send "exit\r"
                                            send "exit\r" } "*?#" { send "\r" }
-       }  "*?#" { send "\r" }
+                                          }  "*?#" { send "\r" }
 
-expect  "*?#" { send "tar xzf spark-0.9.0-incubating.tgz\r" } 
-expect "*?#" { send "cd spark-0.9.0-incubating\r" }
-expect "*?:~/spark-0.9.0-incubating#" { send "sbt/sbt assembly\r" }
-expect "*?:~/spark-0.9.0-incubating#" { send "exit\r"
-                                        send "exit\r"
-                                      }
-#interact "*" send "\r" 
-#expect "*" { send "^[\[D" }
-#expect "*" { send "\r"}
-#expect "*?#" { send "exit" }
+               } "*?#" { send "\r" }
+
+           }
+#expect " *wget: command not*" { send "apt-get install wget\r"} 
+
+#Try downloading twice and exit the contaiiner
+#       expect "*unable to resolve host*" { 
+#                   send "wget archive.apache.org/dist/hadoop/core/hadoop-1.0.4/hadoop-1.0.4.tar.gz\r"
+#                   expect "*unable to resolve host*" { puts "connectivity issue. Logging out"
+#                                           send "exit\r"
+#                                           send "exit\r" } "*?#" { send "\r" }
+#                                          }  "*?#" { send "\r" }
+#
+send "file $hdp_folder\r"
+
+expect "ERROR" {
+              
+               send "tar xzf hadoop-1.0.4.tar.gz\r"
+               expect "*?#" { send "cd hadoop-1.0.4\r" }
+               #Setting up config files
+               expect "*?:~/hadoop-1.0.4#" { send "printf 'export JAVA_HOME=/usr/lib/jvm/java-1.7.0-openjdk-amd64' >> ./conf/hadoop-env.sh\r"
+                                             send "printf 'PATH=\$PATH:/home/ubuntu/hadoop-1.0.4/bin' >> ~/.bashrc\r"
+                                             send "printf 'export HADOOP_HOME=/home/ubuntu/hadoop-1.0.4' >> ~/.bashrc\r"
+                                             send "cp $spark_home/conf/spark-env.sh.template $spark_home/conf/spar-env.sh\r "
+	                      send "printf 'HADOOP_CONF_DIR=$hdp_folder/conf' >> $spark_home/spark-env.sh/\r"
+                              send "printf 'export HADOOP_CONF_DIR' >> $spark_home/spark-env.sh/\r"
+                          
+                                             puts "\n---------------------"
+                                             puts "Installed Hadoop 1.0.4"
+                                             puts "-----------------------\n"
+
+                                           }
+
+             } "directory" { send "exit\r"
+                             send "exit\r"
+                             puts "\n-------------------------"
+                             puts "Hadoop Already Installed!"
+                             puts "--------------------------\n"
+                           }
 
 
+#Setting up config files
+#expect "*?:~/hadoop-1.0.4#" { send "echo export JAVA_HOME=/usr/lib/jvm/java-1.7.0-openjdk-amd64 >> ./conf/hadoop-env.sh\r"
+#                              send "echo PATH=\$PATH:/home/ubuntu/hadoop-1.0.4/bin >> ~/.bashrc\r"
+#                              send "echo export HADOOP_HOME=/home/ubuntu/hadoop-1.0.4 >> ~/.bashrc\r"
+#                              send "echo HADOOP_CONF_DIR=/home/ubuntu/spark-0.8.0-incubating/conf\r"
+
+#                            }
+
+
+#interact
 
