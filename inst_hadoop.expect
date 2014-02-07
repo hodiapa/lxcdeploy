@@ -1,5 +1,6 @@
 #!/usr/bin/expect -f
-
+#spark should be installed before running this script
+#java 
 #Set tcl variables
 set container ubuntu@[lindex $argv 0]
 set timeout 500
@@ -64,7 +65,8 @@ expect "ERROR" {
                expect "*?:~/hadoop-1.0.4#" { send "printf 'export JAVA_HOME=/usr/lib/jvm/java-1.7.0-openjdk-amd64' >> ./conf/hadoop-env.sh\r"
                                              send "printf 'PATH=\$PATH:/home/ubuntu/hadoop-1.0.4/bin' >> ~/.bashrc\r"
                                              send "printf 'export HADOOP_HOME=/home/ubuntu/hadoop-1.0.4' >> ~/.bashrc\r"
-                                             send "cp $spark_home/conf/spark-env.sh.template $spark_home/conf/spar-env.sh\r "
+                              #spark should be installed before running this script               
+                              send "cp $spark_home/conf/spark-env.sh.template $spark_home/conf/spar-env.sh\r "
 	                      send "printf 'HADOOP_CONF_DIR=$hdp_folder/conf' >> $spark_home/spark-env.sh/\r"
                               send "printf 'export HADOOP_CONF_DIR' >> $spark_home/spark-env.sh/\r"
                           
