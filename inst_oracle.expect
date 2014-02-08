@@ -1,6 +1,7 @@
 #!/usr/bin/expect -f
 
-set timeout 300
+
+set timeout 3000
 
 
 spawn ssh ubuntu@[lindex $argv 0]
@@ -15,18 +16,26 @@ expect "*?/no?" {
 expect "*:~?*" { send "sudo -s\r" }
 expect "*untu:" { send "ubuntu\r" }
 #install package
-puts "\nInstalling java.This might take a while. When done exit from the ssh session manually"
-expect "*?#" { send "sudo apt-get install openjdk-7-jdk\r" }
+puts "\nInstalling java.This might take a while."
+expect "*?#" { send "apt-get -qqy update\r" }
+expect "*?#" { send "which java >/dev/null || sudo apt-get install -qqy openjdk-7-jdk\r" }
 expect "*dpkg was interrupted*" { 
        send "sudo dpkg --configure -a\r"
-       expect "*?#" { send " sudo apt-get install openjdk-7-jdk\r" }
-       }  "*Y*" { send "Y\r" } "*?#" { send "\r" }
+       expect "*?#" { send " sudo apt-get install --qqy  openjdk-7-jdk\r" }
+       }  "*?/n]?" { send "Y\r" } "*?#" { send "\r"
+                                       puts "\n---------------------"
+                                       puts "Java installed."
+                                       puts "\n---------------------"
+                                      }
 
-expect  "*Y*" { send "Y\r" } "*?#" { send "\r" }
+#expect  "*Y*" { send "Y\r" } "*?#" { send "\r" }
 #interact "*" send "\r" 
 #expect "*" { send "^[\[D" }
 #expect "*" { send "\r"}
 #expect "*?#" { send "exit" }
+expect "*?#" { send "exit\r"
+               send "exit\r"
+             }
 
-interact
+
 
