@@ -9,7 +9,10 @@ spawn ssh ubuntu@[lindex $argv 0]
 expect "*?/no?" {
     send "yes\r"
     expect "*?assword:" { send "ubuntu\r" }
-    } "*?assword:" { send "ubuntu\r" }
+
+    } "*?assword:" { send "ubuntu\r" } 
+
+#puts $expect_out(buffer)
 
 #login as root
 expect "*:~?*" { send "sudo -s\r" }
@@ -22,9 +25,11 @@ puts "-------------------------------\n"
 
 #This will expand PATH
 #send "printf \"PATH=\$PATH:/home/ubuntu/hadoop-1.0.4/bin\" >> ~/.bashrc\r"
-
+#puts $expect_out(buffer)
 #This won't 
 #send "printf 'PATH=\$PATH:/home/ubuntu/hadoop-1.0.4/bin' >> ~/.bashrc\r"
+
+expect "#" { send "\r"}
 
 interact
 
