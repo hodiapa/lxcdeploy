@@ -31,7 +31,7 @@ then
 else 
   echo "LXC is not installed..installing"
 #no expect handling here
-  apt-get install lxc
+  apt-get -qqy install lxc
 fi
 
 #Create base container
