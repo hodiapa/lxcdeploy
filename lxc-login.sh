@@ -60,9 +60,6 @@ then
   exit
 fi
 
-#./login.expect ${ip}
-#./inst_repo.expect ${ip}
-./inst_oracle.expect ${ip}
-./inst_spark.expect ${ip}
-./inst_hadoop.expect ${ip}
+./login.expect ${ip}
+
 echo "Welcome back"

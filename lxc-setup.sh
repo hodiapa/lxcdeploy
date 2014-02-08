@@ -43,9 +43,9 @@ else
   lxc-create -t ubuntu -n $lxc_name
 fi
 
-#start hadoop11
+#start container
 lxc-start -d -n $lxc_name
-sleep 2
+sleep 5
 
 # Get ip address of base container
 #http://sunsite.ualberta.ca/Documentation/Gnu/gawk-3.1.0/html_chapter/gawk_8.html#SEC115
@@ -56,13 +56,13 @@ ip=`awk -v pattern="$lxc_name" '$0 ~ pattern { print $3 }' /var/lib/misc/dnsmasq
 
 if test -z "$ip"
 then
-  echo "Failed to get ip address. Run script again"
+  echo "Failed to get ip address. Run script again. If it doesnt work restart lxc-net."
   exit
 fi
 
 #./login.expect ${ip}
-#./inst_oracle.expect ${ip}
-#./exp.expect ${ip}
-#./inst_spark.expect ${ip}
+#./inst_repo.expect ${ip}
+./inst_oracle.expect ${ip}
+./inst_spark.expect ${ip}
 ./inst_hadoop.expect ${ip}
 echo "Welcome back"
