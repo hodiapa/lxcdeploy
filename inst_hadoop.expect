@@ -69,7 +69,7 @@ expect "ERROR" {
                               send "cp $spark_home/conf/spark-env.sh.template $spark_home/conf/spar-env.sh\r "
 	                      send "printf 'HADOOP_CONF_DIR=$hdp_folder/conf' >> $spark_home/spark-env.sh/\r"
                               send "printf 'export HADOOP_CONF_DIR' >> $spark_home/spark-env.sh/\r"
-                          
+                              send "chown -R ubuntu ./../hadoop-1.0.4\r"
                                              puts "\n---------------------"
                                              puts "Installed Hadoop 1.0.4"
                                              puts "-----------------------\n"
