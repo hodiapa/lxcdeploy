@@ -1,0 +1,10 @@
+
+--Fix bug in script
+chown -R ubuntu ~/hadoop-1.0.4
+
+--aliases for .bashrc
+alias gohome='cd ~'
+alias golxc='cd ~/lxc_scripts'
+alias container1='./lxc-login.sh container1'
+alias lxclist='head /var/lib/misc/dnsmasq.leases'
+
