@@ -33,3 +33,9 @@ ssh-copy-id -i ~/.ssh/id_rsa.pub ubuntu@container1
 
 scp ~/hdf-site.xml ubuntu@containername:~/hadoop-1.0.4/conf
 scp ~/core-site.xml ubuntu@containername:~/hadoop-1.0.4/conf
+
+--lxc clone: C2 is a clone of C1
+
+sudo lxc-clone -o C1 -n C2
+
+
