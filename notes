@@ -20,3 +20,16 @@ git push -u origin master
 (push existing repo)
 git remote add origin https://github.com/pbprasad99/Test
 git push -u origin master
+
+
+--setup passwordless ssh between master and slaves
+
+on master --> ssh-keygen -t rsa 
+ssh-copy-id -i ~/.ssh/id_rsa.pub ubuntu@container1
+
+
+
+--scp
+
+scp ~/hdf-site.xml ubuntu@containername:~/hadoop-1.0.4/conf
+scp ~/core-site.xml ubuntu@containername:~/hadoop-1.0.4/conf
