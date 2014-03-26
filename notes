@@ -8,3 +8,15 @@ alias golxc='cd ~/lxc_scripts'
 alias container1='./lxc-login.sh container1'
 alias lxclist='head /var/lib/misc/dnsmasq.leases'
 
+
+
+--git notes
+touch README.md
+git init
+git add README.md
+git commit -m "first commit"
+git remote add origin https://github.com/pbprasad99/Test
+git push -u origin master
+(push existing repo)
+git remote add origin https://github.com/pbprasad99/Test
+git push -u origin master
