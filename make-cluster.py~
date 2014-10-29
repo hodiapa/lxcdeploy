@@ -90,11 +90,11 @@ def main():
        tmp = f.read().strip()
        os.system("echo " + tmp + " >> /var/lib/lxc/"+ BASE_CONTAINER + "/rootfs/home/ubuntu/hadoop-1.0.4/conf/slaves")
        os.system("echo " + tmp + " >> /var/lib/lxc/" + BASE_CONTAINER + "/rootfs/home/ubuntu/spark-1.1.0-bin-hadoop1/conf/slaves")
-       ip_slaves.append(tmp)
+       ip_slave.append(tmp)
  
  #Update slave ip addresses in hosts file of all containers 
  
- for idx,val in enumerate(ip_slaves):
+ for idx,val in enumerate(ip_slave):
    for i in range(1,WORKERS+2): 
     os.system("echo " + val + "   " + BASE_NAME + str(idx + 2) + " >> /var/lib/lxc/" + BASE_NAME + str(i)  + "/rootfs/etc/hosts")
  

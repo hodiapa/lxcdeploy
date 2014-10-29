@@ -24,6 +24,10 @@ fi
 
 lxc-stop -n $BASECONTAINER
 
+# update ip address of Base container in hosts file. slave ip addresses updated in make-cluster.py
+cat /dev/null > /var/lib/lxc/$BASECONTAINER/rootfs/etc/hosts
+echo $ip  $BASECONTAINER >> /var/lib/lxc/$BASECONTAINER/rootfs/etc/hosts
+
 #configure core-site.xml
 sed -i '6d'  /var/lib/lxc/$BASECONTAINER/rootfs/home/ubuntu/hadoop-1.0.4/conf/core-site.xml
 sed -i '6d'  /var/lib/lxc/$BASECONTAINER/rootfs/home/ubuntu/hadoop-1.0.4/conf/core-site.xml
@@ -64,13 +68,13 @@ echo 'export JAVA_HOME=/usr/lib/jvm/java-1.7.0-openjdk-amd64' >> /var/lib/lxc/$B
 echo 'PATH=$PATH:/home/ubuntu/hadoop-1.0.4/bin' >> /var/lib/lxc/$BASECONTAINER/rootfs/home/ubuntu/.bashrc
 echo 'export HADOOP_HOME=/home/ubuntu/hadoop-1.0.4' >> /var/lib/lxc/$BASECONTAINER/rootfs/home/ubuntu/.bashrc
 #spark should be installed before running this script              
-cp /var/lib/lxc/$BASECONTAINER/rootfs/home/ubuntu/spark-0.9.0-incubating/conf/spark-env.sh.template /var/lib/lxc/$BASECONTAINER/rootfs/home/ubuntu/spark-0.9.0-incubating/conf/spark-env.sh
-echo 'HADOOP_CONF_DIR=/home/ubuntu/hadoop-1.0.4/conf' >> /var/lib/lxc/$BASECONTAINER/rootfs/home/ubuntu/spark-0.9.0-incubating/conf/spark-env.sh
-echo 'export HADOOP_CONF_DIR' >> /var/lib/lxc/$BASECONTAINER/rootfs/home/ubuntu/spark-0.9.0-incubating/conf/spark-env.sh
-echo "SPARK_MASTER_IP=$ip"  >> /var/lib/lxc/$BASECONTAINER/rootfs/home/ubuntu/spark-0.9.0-incubating/conf/spark-env.sh
+cp /var/lib/lxc/$BASECONTAINER/rootfs/home/ubuntu/spark-1.1.0-bin-hadoop1/conf/spark-env.sh.template /var/lib/lxc/$BASECONTAINER/rootfs/home/ubuntu/spark-1.1.0-bin-hadoop1/conf/spark-env.sh
+echo 'HADOOP_CONF_DIR=/home/ubuntu/hadoop-1.0.4/conf' >> /var/lib/lxc/$BASECONTAINER/rootfs/home/ubuntu/spark-1.1.0-bin-hadoop1/conf/spark-env.sh
+echo 'export HADOOP_CONF_DIR' >> /var/lib/lxc/$BASECONTAINER/rootfs/home/ubuntu/spark-1.1.0-bin-hadoop1/conf/spark-env.sh
+echo "SPARK_MASTER_IP=$ip"  >> /var/lib/lxc/$BASECONTAINER/rootfs/home/ubuntu/spark-1.1.0-bin-hadoop1/conf/spark-env.sh
 sed -i 's/^localhost/#localhost/' /var/lib/lxc/$BASECONTAINER/rootfs/home/ubuntu/hadoop-1.0.4/conf/masters
 sed -i 's/^localhost/#localhost/' /var/lib/lxc/$BASECONTAINER/rootfs/home/ubuntu/hadoop-1.0.4/conf/slaves
-sed -i 's/^localhost/#localhost/' /var/lib/lxc/$BASECONTAINER/rootfs/home/ubuntu/spark-0.9.0-incubating/conf/slaves
+sed -i 's/^localhost/#localhost/' /var/lib/lxc/$BASECONTAINER/rootfs/home/ubuntu/spark-1.1.0-bin-hadoop1/conf/slaves
 
 lxc-start -d -n $BASECONTAINER
 
