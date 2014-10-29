@@ -58,6 +58,7 @@ expect "ERROR" {
 send "file $hdp_folder\r"
 
 expect "ERROR" {
+               
               
                send "tar xzf hadoop-1.0.4.tar.gz\r"
                expect "*?#" { send "cd hadoop-1.0.4\r" }
@@ -76,22 +77,22 @@ expect "ERROR" {
 
                                            }
 
-             } "directory" { send "exit\r"
-                             send "exit\r"
-                             puts "\n-------------------------"
-                             puts "Hadoop Already Installed!"
-                             puts "--------------------------\n"
+             } "directory" { puts "Configuring ..."
+                             send "cd $hdp_folder\r"
+                             send "printf 'export JAVA_HOME=/usr/lib/jvm/java-1.7.0-openjdk-amd64' >> ./conf/hadoop-env.sh\r"
+                                             send "printf 'PATH=\$PATH:/home/ubuntu/hadoop-1.0.4/bin' >> ~/.bashrc\r"
+                                             send "printf 'export HADOOP_HOME=/home/ubuntu/hadoop-1.0.4' >> ~/.bashrc\r"
+                              #spark should be installed before running this script               
+                              send "cp $spark_home/conf/spark-env.sh.template $spark_home/conf/spar-env.sh\r "
+                              send "printf 'HADOOP_CONF_DIR=$hdp_folder/conf' >> $spark_home/spark-env.sh/\r"
+                              send "printf 'export HADOOP_CONF_DIR' >> $spark_home/spark-env.sh/\r"
+                              send "chown -R ubuntu ./../hadoop-1.0.4\r"
+
+
                            }
 
 
-#Setting up config files
-#expect "*?:~/hadoop-1.0.4#" { send "echo export JAVA_HOME=/usr/lib/jvm/java-1.7.0-openjdk-amd64 >> ./conf/hadoop-env.sh\r"
-#                              send "echo PATH=\$PATH:/home/ubuntu/hadoop-1.0.4/bin >> ~/.bashrc\r"
-#                              send "echo export HADOOP_HOME=/home/ubuntu/hadoop-1.0.4 >> ~/.bashrc\r"
-#                              send "echo HADOOP_CONF_DIR=/home/ubuntu/spark-0.8.0-incubating/conf\r"
-
-#                            }
 
 
-#interact
+
 

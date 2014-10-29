@@ -66,6 +66,4 @@ fi
 ./inst_spark.expect ${ip}
 ./inst_hadoop.expect ${ip}
 
-#lxc-stop -n $lxc_name
-
-echo "Made Base Container"
+lxc-stop -n $lxc_name

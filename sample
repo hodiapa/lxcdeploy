@@ -1,0 +1,5 @@
+#!/bin/bash
+
+con="test"
+suffix=1
+co=$con$  
