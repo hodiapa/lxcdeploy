@@ -92,14 +92,19 @@ def main():
        os.system("echo " + tmp + " >> /var/lib/lxc/" + BASE_CONTAINER + "/rootfs/home/ubuntu/spark-1.1.0-bin-hadoop1/conf/slaves")
        ip_slaves.append(tmp)
  
+ #Clear /etc/hosts for all slaves + write master's ip address
+ for i in range(2,WORKERS+2):
+      os.system("cat /dev/null >> /var/lib/lxc/" + BASE_NAME + str(i)  + "/rootfs/etc/hosts")
+      os.system("echo " + master_address + "  " + BASE_CONTAINER + " >> /var/lib/lxc/" + BASE_NAME + str(i)  + "/rootfs/etc/hosts")
+
  #Update slave ip addresses in hosts file of all containers 
  
  for idx,val in enumerate(ip_slaves):
-   for i in range(1,WORKERS+2): 
+   for i in range(2,WORKERS+2): 
     os.system("echo " + val + "   " + BASE_NAME + str(idx + 2) + " >> /var/lib/lxc/" + BASE_NAME + str(i)  + "/rootfs/etc/hosts")
  
  #Install scala and sbt on base container
  os.system('./inst_scala_sbt.expect '+ master_address)      
- print "--------------------------DONE----------------------------------------------------"
+ print "\n---------------------------DONE----------------------------------------------------"
         
 if __name__ == "__main__":main()
