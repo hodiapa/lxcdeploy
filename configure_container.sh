@@ -25,8 +25,8 @@ fi
 lxc-stop -n $BASECONTAINER
 
 # update ip address of Base container in hosts file. slave ip addresses updated in make-cluster.py
-cat /dev/null > /var/lib/lxc/$BASECONTAINER/rootfs/etc/hosts
-echo $ip  $BASECONTAINER >> /var/lib/lxc/$BASECONTAINER/rootfs/etc/hosts
+#cat /dev/null > /var/lib/lxc/$BASECONTAINER/rootfs/etc/hosts
+#echo $ip  $BASECONTAINER >> /var/lib/lxc/$BASECONTAINER/rootfs/etc/hosts
 
 #configure core-site.xml
 sed -i '6d'  /var/lib/lxc/$BASECONTAINER/rootfs/home/ubuntu/hadoop-1.0.4/conf/core-site.xml
