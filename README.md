@@ -20,6 +20,8 @@ lxc-login.sh : Logs in to a container.
 Usage :
 
 To set up a cluster with spark and hadoop, cd to lxcdeploy and run
+
+
 ./make-cluster.py -n <Cluster-Name> -w <Number of slave nodes>
 
 This will create containers named Cluster-Name1, Cluster-Name2....Cluster-Name<w+2>
