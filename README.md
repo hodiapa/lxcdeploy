@@ -1,14 +1,21 @@
 ###################################################################################
-Scripts to setup a spark+hadoop cluster
-Tested on ubuntu 14.04 
+Scripts to setup a spark+hadoop cluster  
+
+Tested on ubuntu 14.04
+ 
 Requirements:
 Must have lxc : sudo apt-get install lxc
+
 Must have expect: sudo apt-get install expect
+
 Must log in as root
+
 make-cluster.py is the wrapper sript which calls other scripts.
+
 You could use the scripts indvidually.
 Each expect script accepts ip address.
 The bash scripts accept a container name , fetch ip address from dnsmasq.leases and the call the expect scripts.
+
 Eg. ./lxc-login.sh container1
 lxc-setup.sh : Creates a container and installs hadoop and spark on the container. 
 ./lxc-setup.sh containername
