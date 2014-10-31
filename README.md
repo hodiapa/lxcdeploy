@@ -33,9 +33,9 @@ Usage :
 To set up a cluster with spark and hadoop, cd to lxcdeploy and run
 
 
-./make-cluster.py -n Cluster-Name -w NumberofSlavNodes`
+./make-cluster.py -n Cluster-Name -w Number-of-Slave-Nodes`
 
-This will create containers named Cluster-Name1, Cluster-Name2....Cluster-Name<w+2>
+This will create containers named Cluster-Name1, Cluster-Name2....Cluster-Name\<w+2\>
 [I will refer to the first container in the cluster as the base container. The rest are spark and hadoop slaves.]
 Base container is hadoop namenode + secondary namenode +spark master
 It also has scala + sbt installed on it. So use the base container for compiling scala.
