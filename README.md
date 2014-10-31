@@ -1,5 +1,5 @@
 ###################################################################################
-Scripts to setup a spark+hadoop cluster  
+Scripts to setup a spark + hadoop cluster on LXC containers.  
 
 Tested on ubuntu 14.04
  
